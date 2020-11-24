@@ -12,6 +12,12 @@ def start_server():
     threading.Thread(target=main, args=(sys.argv[1:],)).start()
 
 
+def test_server(rand_sleep=False):
+    from api_tester import ApiTester
+
+    ApiTester(rand_sleep=rand_sleep).start_test()
+
+
 if __name__ == '__main__':
-    print(game.whose_turn())
     start_server()
+    # test_server(True)  # uncomment this line to run API Tester
