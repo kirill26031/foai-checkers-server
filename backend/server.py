@@ -1,14 +1,15 @@
+import asyncio
 import logging
 import sys
 
 from aiohttp import web
 
-from .settings import get_config
 from .routes import setup_routes
+from .settings import get_config
 
 
-async def init_app(argv=None):
-    app = web.Application()
+def init_app(loop, argv=None):
+    app = web.Application(loop=loop)
 
     app['config'] = get_config(argv)
 
@@ -21,12 +22,25 @@ async def init_app(argv=None):
 def main(argv):
     logging.basicConfig(level=logging.DEBUG)
 
-    app = init_app(argv)
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
 
-    config = get_config(argv)
-    web.run_app(app,
-                host=config['host'],
-                port=config['port'])
+    app = init_app(loop, argv)
+
+    config = app['config']
+
+    runner = web.AppRunner(app)
+    loop.run_until_complete(runner.setup())
+    site = web.TCPSite(
+        runner,
+        host=config['host'],
+        port=config['port']
+    )
+    loop.run_until_complete(site.start())
+
+    loop.run_forever()
 
 
 if __name__ == '__main__':
