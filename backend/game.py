@@ -22,7 +22,7 @@ class Game:
         self._game = game
         self._is_started = False
         self._is_finished = False
-        self._available_move_time = 30.2  # 200 ms plus, cause for network latency
+        self._available_move_time = 3.2  # 200 ms plus, cause for network latency
         self._available_current_move_time = self._available_move_time
         self._players = {}
         self._lost_time_player = None
@@ -37,26 +37,29 @@ class Game:
     def _status(self):
         if not self._is_started:
             return 'Not yet started'
-        if self._is_finished:
-            return f'Player {self._colors_table[self._lost_time_player]}'
+        if self._lost_time_player:
+            return f'Player {self._colors_table[self._lost_time_player]} reached time limit'
         return 'Game is over' if self._game.is_over() else 'Game is playing'
 
     def _winner(self):
-        if self._is_finished:
+        if self._lost_time_player:
             return self._colors_table[1] \
                 if self._lost_time_player == 2 \
                 else self._colors_table[2]
-        return self._colors_table[self._game.get_winner()]
+        return self._colors_table[self._game.get_winner()] if self._game.get_winner() else None
 
     def _board(self):
         output = []
 
         for piece in self._game.board.pieces:
-            output.append({
-                'color': 'red' if piece.player == 2 else 'black',
-                'row': piece.get_row(),
-                'column': piece.get_column()
-            })
+            if not piece.captured:
+                output.append({
+                    'color': 'RED' if piece.player == 2 else 'BLACK',
+                    'row': piece.get_row(),
+                    'column': piece.get_column(),
+                    'king': piece.king,
+                    'position': piece.position
+                })
 
         return output
 
@@ -102,6 +105,7 @@ class Game:
                 break
 
             if self._game.is_over():
+                self._is_finished = True
                 break
 
     def move(self, token, move):
@@ -117,6 +121,9 @@ class Game:
     def is_started(self):
         return self._is_started
 
+    def is_finished(self):
+        return self._is_finished
+
     @property
     def json(self):
         return {
@@ -124,5 +131,7 @@ class Game:
             'whose_turn': self._whose_turn(),
             'winner': self._winner(),
             'board': self._board(),
-            'available_time': self._available_current_move_time
+            'available_time': self._available_current_move_time,
+            'is_started': self.is_started(),
+            'is_finished': self.is_finished()
         }

@@ -21,6 +21,9 @@ class Views:
         return web.json_response({'status': 'healthy'})
 
     async def connect(self, request):
+        if self._game.is_started():
+            raise web.HTTPBadRequest(text='Game has already been started')
+
         try:
             team_name = request.query['team_name']
         except KeyError:
@@ -39,6 +42,9 @@ class Views:
         return self._prepare_response(self._game.json)
 
     async def move(self, request):
+        if not self._game.is_started() or self._game.is_finished():
+            raise web.HTTPBadRequest(text='You cannot make move right now')
+
         try:
             header = request.headers["Authorization"]
 

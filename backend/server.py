@@ -40,6 +40,8 @@ def main(argv):
     )
     loop.run_until_complete(site.start())
 
+    logging.info(f'Server started at: http://{config["host"]}:{config["port"]}')
+
     loop.run_forever()
 
 
