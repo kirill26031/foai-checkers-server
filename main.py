@@ -1,26 +1,34 @@
+import asyncio
 import sys
 import threading
 
 from checkers.game import Game
-from board_drawing import BDManager
 
-## Init components
+# Init components
 game = Game()
 
-def start_server():
+
+def start_server(loop):
     from backend.server import main
 
-    threading.Thread(target=main, args=(sys.argv[1:],)).start()
+    threading.Thread(target=main, args=(loop,)).start()
 
 
-def test_server(rand_sleep=False):
+def test_server(loop, rand_sleep=False):
     from api_tester import ApiTester
 
-    ApiTester(rand_sleep=rand_sleep).start_test()
+    threading.Thread(target=ApiTester(loop, rand_sleep=rand_sleep).start_test).start()
+
+
+def run_ui():
+    from board_drawing import BDManager
+
+    BDManager()
 
 
 if __name__ == '__main__':
-    BDManager(game=game)
-    start_server()
+    _loop = asyncio.get_event_loop()
+    start_server(_loop)
     if sys.argv.__len__() > 1 and sys.argv[1] == 'test':
-        test_server(rand_sleep=False)
+        test_server(_loop, rand_sleep=False)
+    run_ui()

@@ -8,12 +8,13 @@ from main import game
 
 
 class ApiTester:
-    def __init__(self, rand_sleep):
+    def __init__(self, loop, rand_sleep):
         self._api_url = 'http://localhost:8081'
         self._session = aiohttp.ClientSession()
         self._game = game
         self._players = {}
         self._rand_sleep = rand_sleep
+        self._loop = loop
 
     async def _prepare_player(self, num):
         async with self._session.post(
@@ -65,7 +66,7 @@ class ApiTester:
             is_started = current_game_progress['is_started']
 
     def start_test(self):
-        asyncio.get_event_loop().run_until_complete(self.start())
+        asyncio.run_coroutine_threadsafe(self.start(), self._loop)
 
     async def start(self):
         logging.info('API Tester initialized, test will start in 2 secs')

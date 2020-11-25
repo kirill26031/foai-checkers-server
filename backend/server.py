@@ -19,15 +19,15 @@ def init_app(loop, argv=None):
     return app
 
 
-def main(argv):
+def main(loop):
     logging.basicConfig(level=logging.DEBUG)
 
-    try:
-        loop = asyncio.get_event_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
+    # try:
+    #     loop = asyncio.get_event_loop()
+    # except RuntimeError:
+    #     loop = asyncio.new_event_loop()
 
-    app = init_app(loop, argv)
+    app = init_app(loop)
 
     config = app['config']
 
@@ -46,4 +46,4 @@ def main(argv):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main(asyncio.get_event_loop())
