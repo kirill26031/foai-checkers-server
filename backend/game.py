@@ -108,6 +108,18 @@ class Game:
                 self._is_finished = True
                 break
 
+        if self._lost_time_player == 1:
+            winner = 2
+        elif self._lost_time_player == 2:
+            winner = 1
+        else:
+            winner = self._game.get_winner()
+
+        self._game.set_winner({
+            'color': self._colors_table[winner],
+            'team_name': self._players[winner]['team_name']
+        })
+
     def move(self, token, move):
         player = self._players[self._game.whose_turn()]
         if player['token'] != token:

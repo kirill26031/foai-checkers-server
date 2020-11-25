@@ -2,7 +2,7 @@ import asyncio
 import sys
 import threading
 
-from checkers.game import Game
+from monkey_patched.game import Game
 
 # Init components
 game = Game()
