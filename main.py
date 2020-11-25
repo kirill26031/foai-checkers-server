@@ -20,4 +20,5 @@ def test_server(rand_sleep=False):
 
 if __name__ == '__main__':
     start_server()
-    # test_server(True)  # uncomment this line to run API Tester
+    if sys.argv.__len__() > 1 and sys.argv[1] == 'test':
+        test_server(rand_sleep=False)

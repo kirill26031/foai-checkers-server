@@ -8,7 +8,7 @@ from main import game
 
 
 class ApiTester:
-    def __init__(self, rand_sleep=False):
+    def __init__(self, rand_sleep):
         self._api_url = 'http://localhost:8081'
         self._session = aiohttp.ClientSession()
         self._game = game
