@@ -22,7 +22,7 @@ class ApiTester:
                 params={'team_name': num}
         ) as resp:
             res = (await resp.json())['data']
-            player_num = 1 if res['color'] == 'BLACK' else 2
+            player_num = 1 if res['color'] == 'RED' else 2
             self._players[player_num] = {
                 'color': res['color'],
                 'token': res['token']
@@ -49,7 +49,7 @@ class ApiTester:
         is_started = current_game_progress['is_started']
 
         while is_started and not is_finished:
-            player_num_turn = 1 if current_game_progress['whose_turn'] == 'BLACK' else 2
+            player_num_turn = 1 if current_game_progress['whose_turn'] == 'RED' else 2
             assert self._game.whose_turn() == player_num_turn
 
             move = random.choice(self._game.get_possible_moves())

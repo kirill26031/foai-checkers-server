@@ -22,11 +22,6 @@ class BDManager:
         self.game = game
         # Drawing
         self._draw_board_only()
-        # self.update_board()
-        # while not self.game.is_over():
-        #     self.root.update()
-        #     print(self.game.is_over())
-        #     time.sleep(0.5)
         self.root.mainloop()
 
     def _draw_board_only(self):
@@ -39,7 +34,7 @@ class BDManager:
         # Print dark square
         for i in range(self.ROWS):
             for j in range(self.COLS):
-                if (i + j) % 2 == 1:
+                if (i + j) % 2 == 0:
                     self.c.create_rectangle(i * self.row_height, j * self.col_width,
                                             (i + 1) * self.row_height, (j + 1) * self.col_width, fill="gray",
                                             outline="gray")
@@ -55,8 +50,6 @@ class BDManager:
     def update_board(self):
         if self.game.is_over():
             return
-        # if not self._needsUpdate:
-        #   return
         # remove old pieces
         for tile in self.tiles:
             self.c.delete(tile)
@@ -66,9 +59,9 @@ class BDManager:
             if piece.captured:
                 continue
 
-            color = "red" if piece.player == 2 else "black"
-            i = piece.get_row()
-            j = piece.get_column() * 2 + 1 if i % 2 == 0 else piece.get_column() * 2
+            color = "red" if piece.player == 1 else "black"
+            j = piece.get_row()
+            i = piece.get_column() * 2 + 1 if j % 2 == 1 else piece.get_column() * 2
             tile = self.c.create_oval(j * self.col_width + 10, i * self.row_height + 10,
                                       (j + 1) * self.col_width - 10, (i + 1) * self.row_height - 10,
                                       fill=color)
@@ -77,8 +70,7 @@ class BDManager:
 
         self._needsUpdate = False
         # make GUI updates board every second
-        self.root.after(200, self.update_board)
-        print("UI updated")
+        self.root.after(1, self.update_board)
 
     def set_needs_update(self):
         self._needsUpdate = True

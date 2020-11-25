@@ -27,8 +27,8 @@ class Game:
         self._players = {}
         self._lost_time_player = None
         self._colors_table = {
-            1: 'BLACK',
-            2: 'RED'
+            1: 'RED',
+            2: 'BLACK'
         }
 
     def _whose_turn(self):
@@ -54,7 +54,7 @@ class Game:
         for piece in self._game.board.pieces:
             if not piece.captured:
                 output.append({
-                    'color': 'RED' if piece.player == 2 else 'BLACK',
+                    'color': 'RED' if piece.player == 1 else 'BLACK',
                     'row': piece.get_row(),
                     'column': piece.get_column(),
                     'king': piece.king,
