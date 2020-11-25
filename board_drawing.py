@@ -23,11 +23,11 @@ class BDManager:
         # Drawing
         self._draw_board_only()
         # self.update_board()
-        while not self.game.is_over():
-            self.root.update()
-            # print(self.game.is_over())
-            time.sleep(0.5)
-        # self.root.mainloop()
+        # while not self.game.is_over():
+        #     self.root.update()
+        #     print(self.game.is_over())
+        #     time.sleep(0.5)
+        self.root.mainloop()
 
     def _draw_board_only(self):
         self.root = tkinter.Tk()
