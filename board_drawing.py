@@ -1,8 +1,7 @@
 import time
-
 import tkinter
-
 from main import game
+import math
 
 
 # Board Drawing manager
@@ -22,6 +21,7 @@ class BDManager:
         self.game = game
         # Drawing
         self._draw_board_only()
+        # Run main loop
         self.root.mainloop()
 
     def _draw_board_only(self):
@@ -67,10 +67,22 @@ class BDManager:
                                       fill=color)
             self.tiles.add(tile)
             self.c.tag_raise(tile)
-
-        self._needsUpdate = False
+            if piece.king:
+                self.draw_king_icon(i,j)
         # make GUI updates board every second
         self.root.after(1, self.update_board)
 
-    def set_needs_update(self):
-        self._needsUpdate = True
+    def draw_king_icon(self, i, j):
+        def submit_tile(tile):
+            self.tiles.add(tile)
+            self.c.tag_raise(tile)
+
+        slip = math.sqrt(2) * self.row_height - (self.row_height - 20)
+        left =  self.c.create_line(j * self.col_width + slip, i * self.row_height + slip, 
+                                    (j + 1) * self.col_width - slip, (i + 1) * self.row_height - slip,
+                                    width=5, fill="white")
+        submit_tile(left)
+        right =  self.c.create_line((j + 1) * self.col_width - slip, i * self.row_height + slip,  
+                                    j * self.col_width + slip, (i + 1) * self.row_height - slip,
+                                    width=5, fill="white")
+        submit_tile(right)
