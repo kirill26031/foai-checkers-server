@@ -2,9 +2,10 @@ import sys
 import threading
 
 from checkers.game import Game
+from board_drawing import BDManager
 
+## Init components
 game = Game()
-
 
 def start_server():
     from backend.server import main
@@ -19,6 +20,7 @@ def test_server(rand_sleep=False):
 
 
 if __name__ == '__main__':
+    BDManager(game=game)
     start_server()
     if sys.argv.__len__() > 1 and sys.argv[1] == 'test':
         test_server(rand_sleep=False)
