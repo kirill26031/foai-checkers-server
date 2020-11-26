@@ -1,5 +1,5 @@
-# foai-chess-server
-Server for Chess contest as an exam for FoAI course at NaUKMA
+# foai-checkers-server
+Server for Checkers contest as an exam for Fundamentals of AI course at NaUKMA
 
 ## How to run server
 1. Install `python 3` and `pip` from https://www.python.org/downloads/.
