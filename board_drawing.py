@@ -34,7 +34,7 @@ class BDManager:
         # Print dark square
         for i in range(self.ROWS):
             for j in range(self.COLS):
-                if (i + j) % 2 == 0:
+                if (i + j) % 2 == 1:
                     self.c.create_rectangle(i * self.row_height, j * self.col_width,
                                             (i + 1) * self.row_height, (j + 1) * self.col_width, fill="gray",
                                             outline="gray")
@@ -61,7 +61,7 @@ class BDManager:
 
             color = "red" if piece.player == 1 else "black"
             j = piece.get_row()
-            i = piece.get_column() * 2 + 1 if j % 2 == 1 else piece.get_column() * 2
+            i = piece.get_column() * 2 + 1 if j % 2 == 0 else piece.get_column() * 2
             tile = self.c.create_oval(j * self.col_width + 10, i * self.row_height + 10,
                                       (j + 1) * self.col_width - 10, (i + 1) * self.row_height - 10,
                                       fill=color)

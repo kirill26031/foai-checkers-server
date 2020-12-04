@@ -9,3 +9,6 @@ Server for Checkers contest as an exam for Fundamentals of AI course at NaUKMA
 > If you have both python 2 and python 3 in your OS, you may want to use `python3` for commands stated above.
 
 > **Note:** Default server host/port is `127.0.0.1:8081`. If you want to run server on non-default host/port, you may change any of these values at `config/checkers-back.yaml`. 
+
+## The map of cells used
+![cell map](./cell_map.jpg)
