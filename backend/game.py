@@ -26,6 +26,7 @@ class Game:
         self._available_current_move_time = self._available_move_time
         self._players = {}
         self._lost_time_player = None
+        self._last_move = None
         self._colors_table = {
             1: 'RED',
             2: 'BLACK'
@@ -126,6 +127,7 @@ class Game:
             raise ForbiddenMoveError
         try:
             self._game.move(move)
+            self._last_move = move
             self._available_current_move_time = self._available_move_time
         except ValueError as e:
             raise MoveIsNotPossible(str(e))
@@ -144,6 +146,7 @@ class Game:
             'winner': self._winner(),
             'board': self._board(),
             'available_time': self._available_current_move_time,
+            'last_move': self._last_move,
             'is_started': self.is_started(),
             'is_finished': self.is_finished()
         }
