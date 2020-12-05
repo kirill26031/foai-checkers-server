@@ -96,7 +96,10 @@ class Game:
         self._is_started = True
 
         while True:
-            logging.info(f'Available time for move: {self._available_current_move_time}')
+            logging.info(
+                f'Available time for player "{self._colors_table[self._game.whose_turn()]}" '
+                f'move: {self._available_current_move_time}'
+            )
 
             await asyncio.sleep(0.05)
 
