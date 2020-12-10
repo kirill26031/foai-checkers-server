@@ -126,7 +126,6 @@ class Game:
         if player['token'] != token:
             raise ForbiddenMoveError
         try:
-            self._game.move(move)
 
             if self._last_move and self._last_move['player'] == self._whose_turn():
                 self._last_move['last_moves'].append(move)
@@ -135,6 +134,7 @@ class Game:
                     'player': self._whose_turn(),
                     'last_moves': [move]
                 }
+            self._game.move(move)
 
             self._available_current_move_time = self._available_move_time
         except ValueError as e:
