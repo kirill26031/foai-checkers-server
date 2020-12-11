@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import logging
 import secrets
 
@@ -85,7 +86,7 @@ class Game:
         }
 
     async def start(self):
-        logging.info('...GAME IS STARTED...')
+        logging.info(f'...GAME IS STARTED at {datetime.datetime.now().isoformat()}...')
         logging.info(
             f'1 player, color: {self._colors_table[1]}, team name: {self._players[1]["team_name"]}'
         )
@@ -96,6 +97,11 @@ class Game:
         self._is_started = True
 
         while True:
+            logging.info(
+                f'Available time for player "{self._colors_table[self._game.whose_turn()]}" '
+                f'move: {self._available_current_move_time}'
+            )
+
             await asyncio.sleep(0.05)
 
             self._available_current_move_time -= 0.05
@@ -121,6 +127,10 @@ class Game:
             'team_name': self._players[winner]['team_name']
         })
 
+        logging.info(
+            f'...GAME WAS FINISHED at {datetime.datetime.now().isoformat()}, winner: {self._game.get_board_winner()}'
+        )
+
     def move(self, token, move):
         player = self._players[self._game.whose_turn()]
         if player['token'] != token:
@@ -135,6 +145,10 @@ class Game:
                     'last_moves': [move]
                 }
             self._game.move(move)
+
+            logging.info(
+                f'{player["team_name"]} made move ({move}) at {datetime.datetime.now().isoformat()}'
+            )
 
             self._available_current_move_time = self._available_move_time
         except ValueError as e:
