@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from aiohttp import web
 
@@ -31,6 +32,7 @@ class Views:
                 text='team_name query parameter is missing'
             )
 
+        logging.info(f'{team_name} connected')
         response = self._game.add_player(team_name)
 
         while not self._game.is_started():

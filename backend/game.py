@@ -23,7 +23,7 @@ class Game:
         self._game = game
         self._is_started = False
         self._is_finished = False
-        self._available_move_time = 3.2  # 200 ms plus, cause for network latency
+        self._available_move_time = 10.2  # 200 ms plus, cause for network latency
         self._available_current_move_time = self._available_move_time
         self._players = {}
         self._lost_time_player = None
@@ -99,12 +99,12 @@ class Game:
         while True:
             logging.info(
                 f'Available time for player "{self._colors_table[self._game.whose_turn()]}" '
-                f'move: {self._available_current_move_time}'
+                f'move: {self._available_current_move_time:.1f}'
             )
 
-            await asyncio.sleep(0.05)
+            await asyncio.sleep(0.5)
 
-            self._available_current_move_time -= 0.05
+            self._available_current_move_time -= 0.5
 
             if self._available_current_move_time < 0:
                 self._lost_time_player = self._game.whose_turn()
@@ -136,15 +136,17 @@ class Game:
         if player['token'] != token:
             raise ForbiddenMoveError
         try:
+            whose_turn = self._whose_turn()
 
-            if self._last_move and self._last_move['player'] == self._whose_turn():
+            self._game.move(move)
+
+            if self._last_move and self._last_move['player'] == whose_turn:
                 self._last_move['last_moves'].append(move)
             else:
                 self._last_move = {
-                    'player': self._whose_turn(),
+                    'player': whose_turn,
                     'last_moves': [move]
                 }
-            self._game.move(move)
 
             logging.info(
                 f'{player["team_name"]} made move ({move}) at {datetime.datetime.now().isoformat()}'
