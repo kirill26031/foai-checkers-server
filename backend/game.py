@@ -123,8 +123,8 @@ class Game:
             winner = self._game.get_winner()
 
         self._game.set_winner({
-            'color': self._colors_table[winner],
-            'team_name': self._players[winner]['team_name']
+            'color': self._colors_table.get(winner, 'draw'),
+            'team_name': self._players.get(winner, {'team_name': 'draw'})['team_name']
         })
 
         logging.info(
