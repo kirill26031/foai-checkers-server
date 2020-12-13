@@ -150,6 +150,7 @@ class Game:
 
             logging.info(
                 f'{player["team_name"]} made move ({move}) at {datetime.datetime.now().isoformat()}'
+				f'\npossible_moves: {self._game.get_possible_moves()}'
             )
 
             self._available_current_move_time = self._available_move_time
